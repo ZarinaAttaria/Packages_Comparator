@@ -5,6 +5,7 @@ import {
   setPackageData,
   removePackage,
   clearSelectedPackages,
+  setIsSelectedPackage,
 } from "./slices/packagesDataSlice";
 import SearchInput from "./SearchInput";
 
@@ -18,6 +19,7 @@ function App() {
   const searchPackage = async (query) => {
     if (!query) return;
     dispatch(clearSelectedPackages());
+
     const response = await fetch(`https://api.npms.io/v2/search?q=${query}`);
     const data = await response.json();
     dispatch(setPackageData(data.results));
@@ -26,8 +28,12 @@ function App() {
   const handleSelectedPackage = (pkg) => {
     if (!selectedPackages.includes(pkg)) {
       dispatch(addPackage(pkg));
+      dispatch(setIsSelectedPackage(true));
     } else {
       dispatch(removePackage(pkg));
+    }
+    if (selectedPackages.length >= 1) {
+      dispatch(setIsSelectedPackage(false));
     }
   };
 

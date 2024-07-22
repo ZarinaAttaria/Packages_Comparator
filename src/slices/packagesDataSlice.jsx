@@ -22,7 +22,10 @@ export const packageDataSlice = createSlice({
     },
     addPackage: (state, action) => {
       const packageName = action.payload;
-      if (!state.selectedPackages.includes(packageName)) {
+      if (
+        !state.selectedPackages.includes(packageName) &&
+        state.isSelectPackage
+      ) {
         state.selectedPackages.push(packageName);
       }
     },
