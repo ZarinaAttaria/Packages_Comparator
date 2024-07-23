@@ -1,24 +1,31 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setQuery } from "./slices/packagesDataSlice";
+import { removePackage, setQuery } from "./slices/packagesDataSlice";
+import _ from "lodash";
+import { CloseOutlined } from "@ant-design/icons";
 
 function SearchInput({ searchPackage, selectedPackages }) {
   const queryData = useSelector((state) => state.packages.query || "");
   const dispatch = useDispatch();
+  const debouncedSearch = _.debounce(() => searchPackage(queryData), 500);
 
   const handleChange = (e) => {
     dispatch(setQuery(e.target.value));
+    debouncedSearch(queryData);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    searchPackage(queryData);
+    debouncedSearch(queryData);
   };
 
+  const handleRemovePackage = (pkg) => {
+    dispatch(removePackage(pkg.packageName));
+  };
   return (
     <>
       <form className="d-flex" onSubmit={handleSubmit}>
         <input
-          className="form-control me-2"
+          className="form-control me-2 searchInput"
           type="search"
           value={queryData}
           onChange={handleChange}
@@ -26,14 +33,17 @@ function SearchInput({ searchPackage, selectedPackages }) {
           aria-label="Search"
         />
         <button className="btn btn-outline-success search_Btn" type="submit">
-          Search
+          Compare
         </button>
       </form>
 
       {selectedPackages.length > 0 ? (
         <ul>
           {selectedPackages.map((pkg, index) => (
-            <h6 key={index}>{pkg}</h6>
+            <h6 key={index}>
+              {pkg.packageName}
+              <CloseOutlined onClick={() => handleRemovePackage(pkg)} />
+            </h6>
           ))}
         </ul>
       ) : (

@@ -5,6 +5,7 @@ const initialState = {
   query: null,
   selectedPackages: [],
   isSelectPackage: true,
+  historicalDownloads: [],
 };
 
 export const packageDataSlice = createSlice({
@@ -21,19 +22,24 @@ export const packageDataSlice = createSlice({
       state.isSelectPackage = action.payload;
     },
     addPackage: (state, action) => {
-      const packageName = action.payload;
+      const { packageName, downloads } = action.payload;
       if (
-        !state.selectedPackages.includes(packageName) &&
+        !state.selectedPackages.some(
+          (pkg) => pkg.packageName === packageName
+        ) &&
         state.isSelectPackage
       ) {
-        state.selectedPackages.push(packageName);
+        state.selectedPackages.push({ packageName, downloads });
       }
     },
     removePackage: (state, action) => {
       const packageName = action.payload;
       state.selectedPackages = state.selectedPackages.filter(
-        (pkg) => pkg !== packageName
+        (pkg) => pkg.packageName !== packageName
       );
+    },
+    setHistoricalDownloads: (state, action) => {
+      state.historicalDownloads = action.payload;
     },
     clearSelectedPackages: (state) => {
       state.selectedPackages = [];
@@ -48,6 +54,7 @@ export const {
   addPackage,
   removePackage,
   clearSelectedPackages,
+  setHistoricalDownloads,
 } = packageDataSlice.actions;
 
 export default packageDataSlice.reducer;
