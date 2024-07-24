@@ -7,6 +7,7 @@ const initialState = {
   selectedPackages: [],
   isSelectedPackage: true,
   historicalDownloads: [],
+  description: null,
 };
 
 export const packageListSlice = createSlice({
@@ -26,13 +27,29 @@ export const packageListSlice = createSlice({
       state.isSelectedPackage = action.payload;
     },
     addPackage: (state, action) => {
-      const { packageName, downloads } = action.payload;
+      const {
+        packageName,
+        downloads,
+        description,
+        repository,
+        date,
+        publisher,
+        maintainers,
+      } = action.payload;
       if (!state.isSelectedPackage) return state;
 
       if (
         !state.selectedPackages.some((pkg) => pkg.packageName === packageName)
       ) {
-        state.selectedPackages.push({ packageName, downloads });
+        state.selectedPackages.push({
+          packageName,
+          downloads,
+          description,
+          repository,
+          date,
+          publisher,
+          maintainers,
+        });
       }
     },
     removePackage: (state, action) => {

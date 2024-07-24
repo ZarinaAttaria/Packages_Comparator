@@ -42,6 +42,8 @@ function SearchInput({ searchPackage, selectedPackages }) {
           placeholder="Search"
           aria-label="Search"
         />
+        <h2 className="vs_heading">Vs</h2>
+
         <input
           className="form-control me-2 searchInput"
           type="search"

@@ -16,9 +16,29 @@ function ComparisonTable({ data }) {
       dataIndex: "repository",
       key: "repository",
     },
+    {
+      title: "Last Modified Date",
+      dataIndex: "date",
+      key: "date",
+    },
+    {
+      title: "Authors/Publishers",
+      dataIndex: "publisher",
+      key: "publisher",
+    },
+    {
+      title: "Maintainers",
+      dataIndex: "maintainers",
+      key: "maintainers",
+    },
   ];
 
-  return <Table dataSource={data} columns={columns} pagination={false} />;
+  return (
+    <>
+      <h3>Comparison</h3>
+      <Table dataSource={data} columns={columns} pagination={false} />
+    </>
+  );
 }
 
 export default ComparisonTable;

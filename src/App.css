@@ -27,3 +27,6 @@ body {
 .selectedItemsList {
   display: flex;
 }
+.vs_heading {
+  margin: 15px;
+}

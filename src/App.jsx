@@ -67,12 +67,28 @@ function App() {
   };
 
   const handleSelectedPackage = async (pkg) => {
+    const response = await fetch(`https://api.npms.io/v2/package/${pkg}`);
+    const data = await response.json();
+    const description =
+      data.collected.metadata.description || "No description ";
+    const repository =
+      data.collected.metadata.links.repository || "No repository ";
+    const date = data.collected.metadata.date || "No last Modified date";
+    const publisher =
+      data.collected.metadata.publisher.username || "No publishers";
+    const maintainers =
+      data.collected.metadata.maintainers[0].email || "No maintainers";
     if (!selectedPackages.some((p) => p.packageName === pkg)) {
       const downloads = await fetchDownloads(pkg);
       dispatch(
         addPackage({
           packageName: pkg,
           downloads,
+          description,
+          repository,
+          date,
+          publisher,
+          maintainers,
         })
       );
       await updateHistoricalDownloads();
@@ -122,8 +138,9 @@ function App() {
             ))
           : ""}
       </div>
-      <DownloadsChart data={historicalDownloads} />
       <ComparisonTable data={selectedPackages} />
+
+      <DownloadsChart data={historicalDownloads} />
       <div>
         {selectedPackages.length > 0 ? (
           <ul>
