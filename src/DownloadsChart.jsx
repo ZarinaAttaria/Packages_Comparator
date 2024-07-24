@@ -9,6 +9,19 @@ const DownloadsChart = ({ data }) => {
     packageName: item.packageName,
   }));
 
+  const uniquePackageNames = [
+    ...new Set(formattedData.map((item) => item.packageName)),
+  ];
+
+  const colors = uniquePackageNames.reduce((acc, packageName, index) => {
+    if (index === 0) {
+      acc[packageName] = "#ff5556";
+    } else if (index === 1) {
+      acc[packageName] = "#a4e057";
+    }
+    return acc;
+  }, {});
+
   const config = {
     data: formattedData,
     xField: "day",
@@ -82,7 +95,7 @@ const DownloadsChart = ({ data }) => {
         formatter: (text) => _.round(_.divide(text, 1000), 2).toLocaleString(),
       },
     },
-    color: ["#ff5556", "#a4e057"],
+    color: ({ packageName }) => colors[packageName] || "#000000",
     legend: {
       position: "right",
       marker: {

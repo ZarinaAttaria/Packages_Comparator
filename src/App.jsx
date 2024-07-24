@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
 import {
   addPackage,
-  setPackageData,
+  setpackageList,
   removePackage,
   setHistoricalDownloads,
   setIsSelectedPackage,
@@ -13,20 +13,22 @@ import { useEffect } from "react";
 import ComparisonTable from "./ComparisonTable";
 
 function App() {
-  const packageData = useSelector((state) => state.packages.packageData);
+  const packageList = useSelector((state) => state.packages.packageList);
   const selectedPackages = useSelector(
     (state) => state.packages.selectedPackages
   );
   const historicalDownloads = useSelector(
     (state) => state.packages.historicalDownloads
   );
+  const isSelectedPackage = useSelector(
+    (state) => state.packages.isSelectedPackage
+  );
   const dispatch = useDispatch();
-
   const searchPackage = async (query) => {
     if (!query) return;
     const response = await fetch(`https://api.npms.io/v2/search?q=${query}`);
     const data = await response.json();
-    dispatch(setPackageData(data.results));
+    dispatch(setpackageList(data.results));
   };
 
   const fetchDownloads = async (pkg) => {
@@ -52,7 +54,6 @@ function App() {
       throw new Error("Invalid downloads data");
     }
   };
-
   const updateHistoricalDownloads = async () => {
     let allHistoricalData = [];
     let selectedPackagesArray = selectedPackages.map((p) => p.packageName);
@@ -79,7 +80,7 @@ function App() {
       dispatch(removePackage(pkg));
       await updateHistoricalDownloads();
     }
-    if (selectedPackages.length >= 1) {
+    if (selectedPackages.length >= 0) {
       dispatch(setIsSelectedPackage(false));
     }
   };
@@ -98,9 +99,10 @@ function App() {
         searchPackage={searchPackage}
         selectedPackages={selectedPackages}
       />
+
       <div>
-        {packageData && packageData.length > 0
-          ? packageData.map((pkg, index) => (
+        {packageList && packageList.length > 0 && selectedPackages.length <= 1
+          ? packageList.map((pkg, index) => (
               <div key={index}>
                 <ul className="list-group">
                   <li

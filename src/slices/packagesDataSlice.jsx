@@ -1,29 +1,33 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  packageData: null,
-  query: null,
+  packageList: null,
+  query1: null,
+  query2: null,
   selectedPackages: [],
-  isSelectPackage: true,
+  isSelectedPackage: true,
   historicalDownloads: [],
 };
 
-export const packageDataSlice = createSlice({
+export const packageListSlice = createSlice({
   name: "packages",
   initialState,
   reducers: {
-    setPackageData: (state, action) => {
-      state.packageData = action.payload;
+    setpackageList: (state, action) => {
+      state.packageList = action.payload;
     },
-    setQuery: (state, action) => {
-      state.query = action.payload;
+    setQuery1: (state, action) => {
+      state.query1 = action.payload;
+    },
+    setQuery2: (state, action) => {
+      state.query2 = action.payload;
     },
     setIsSelectedPackage: (state, action) => {
-      state.isSelectPackage = action.payload;
+      state.isSelectedPackage = action.payload;
     },
     addPackage: (state, action) => {
       const { packageName, downloads } = action.payload;
-      if (!state.isSelectPackage) return state;
+      if (!state.isSelectedPackage) return state;
 
       if (
         !state.selectedPackages.some((pkg) => pkg.packageName === packageName)
@@ -47,13 +51,15 @@ export const packageDataSlice = createSlice({
 });
 
 export const {
-  setPackageData,
-  setQuery,
+  setpackageList,
+  setQuery1,
+  setQuery2,
+
   setIsSelectedPackage,
   addPackage,
   removePackage,
   clearSelectedPackages,
   setHistoricalDownloads,
-} = packageDataSlice.actions;
+} = packageListSlice.actions;
 
-export default packageDataSlice.reducer;
+export default packageListSlice.reducer;
