@@ -6,6 +6,7 @@ import {
   removePackage,
   setHistoricalDownloads,
   setIsSelectedPackage,
+  setComparisonTable,
 } from "./slices/packagesDataSlice";
 import SearchInput from "./SearchInput";
 import DownloadsChart from "./DownloadsChart";
@@ -22,6 +23,9 @@ function App() {
   );
   const isSelectedPackage = useSelector(
     (state) => state.packages.isSelectedPackage
+  );
+  const showComparisonTable = useSelector(
+    (state) => state.packages.showComparisonTable
   );
   const dispatch = useDispatch();
   const searchPackage = async (query) => {
@@ -69,6 +73,7 @@ function App() {
   const handleSelectedPackage = async (pkg) => {
     const response = await fetch(`https://api.npms.io/v2/package/${pkg}`);
     const data = await response.json();
+    dispatch(setComparisonTable(true));
     const description =
       data.collected.metadata.description || "No description ";
     const repository =
@@ -138,7 +143,7 @@ function App() {
             ))
           : ""}
       </div>
-      <ComparisonTable data={selectedPackages} />
+      {showComparisonTable ? <ComparisonTable data={selectedPackages} /> : ""}
 
       <DownloadsChart data={historicalDownloads} />
       <div>

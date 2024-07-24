@@ -8,6 +8,7 @@ const initialState = {
   isSelectedPackage: true,
   historicalDownloads: [],
   description: null,
+  showComparisonTable: false,
 };
 
 export const packageListSlice = createSlice({
@@ -64,6 +65,9 @@ export const packageListSlice = createSlice({
     clearSelectedPackages: (state) => {
       state.selectedPackages = [];
     },
+    setComparisonTable: (state, action) => {
+      state.showComparisonTable = action.payload;
+    },
   },
 });
 
@@ -77,6 +81,7 @@ export const {
   removePackage,
   clearSelectedPackages,
   setHistoricalDownloads,
+  setComparisonTable,
 } = packageListSlice.actions;
 
 export default packageListSlice.reducer;
