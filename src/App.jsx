@@ -4,12 +4,13 @@ import {
   addPackage,
   setPackageData,
   removePackage,
-  clearSelectedPackages,
-  setIsSelectedPackage,
   setHistoricalDownloads,
+  setIsSelectedPackage,
 } from "./slices/packagesDataSlice";
 import SearchInput from "./SearchInput";
 import DownloadsChart from "./DownloadsChart";
+import { useEffect } from "react";
+import ComparisonTable from "./ComparisonTable";
 
 function App() {
   const packageData = useSelector((state) => state.packages.packageData);
@@ -51,30 +52,45 @@ function App() {
       throw new Error("Invalid downloads data");
     }
   };
+
+  const updateHistoricalDownloads = async () => {
+    let allHistoricalData = [];
+    let selectedPackagesArray = selectedPackages.map((p) => p.packageName);
+    for (const pkg of selectedPackagesArray) {
+      const historicalDownloadsData = await fetchHistoricalDownloads(pkg);
+      if (historicalDownloadsData && Array.isArray(historicalDownloadsData)) {
+        allHistoricalData = allHistoricalData.concat(historicalDownloadsData);
+      }
+    }
+    dispatch(setHistoricalDownloads(allHistoricalData));
+  };
+
   const handleSelectedPackage = async (pkg) => {
     if (!selectedPackages.some((p) => p.packageName === pkg)) {
       const downloads = await fetchDownloads(pkg);
-      dispatch(addPackage({ packageName: pkg, downloads }));
-
-      const historicalDownloadsData = await fetchHistoricalDownloads(pkg);
-
-      if (historicalDownloadsData && Array.isArray(historicalDownloadsData)) {
-        dispatch(setHistoricalDownloads(historicalDownloadsData));
-      } else {
-        console.error(
-          "Historical downloads data is not an array",
-          historicalDownloadsData
-        );
-      }
-
-      dispatch(setIsSelectedPackage(true));
+      dispatch(
+        addPackage({
+          packageName: pkg,
+          downloads,
+        })
+      );
+      await updateHistoricalDownloads();
     } else {
       dispatch(removePackage(pkg));
+      await updateHistoricalDownloads();
     }
     if (selectedPackages.length >= 1) {
       dispatch(setIsSelectedPackage(false));
     }
   };
+
+  useEffect(() => {
+    if (selectedPackages.length > 0) {
+      updateHistoricalDownloads();
+    } else {
+      dispatch(setHistoricalDownloads([]));
+    }
+  }, [selectedPackages, dispatch]);
 
   return (
     <>
@@ -105,12 +121,14 @@ function App() {
           : ""}
       </div>
       <DownloadsChart data={historicalDownloads} />
+      <ComparisonTable data={selectedPackages} />
       <div>
         {selectedPackages.length > 0 ? (
           <ul>
             {selectedPackages.map((pkg, index) => (
               <div key={index}>
                 <h6>{pkg.packageName}</h6>
+
                 <p>Downloads: {pkg.downloads}</p>
               </div>
             ))}

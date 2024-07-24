@@ -23,11 +23,10 @@ export const packageDataSlice = createSlice({
     },
     addPackage: (state, action) => {
       const { packageName, downloads } = action.payload;
+      if (!state.isSelectPackage) return state;
+
       if (
-        !state.selectedPackages.some(
-          (pkg) => pkg.packageName === packageName
-        ) &&
-        state.isSelectPackage
+        !state.selectedPackages.some((pkg) => pkg.packageName === packageName)
       ) {
         state.selectedPackages.push({ packageName, downloads });
       }
