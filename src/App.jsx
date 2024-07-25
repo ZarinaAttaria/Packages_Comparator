@@ -12,6 +12,8 @@ import SearchInput from "./SearchInput";
 import DownloadsChart from "./DownloadsChart";
 import { useEffect } from "react";
 import ComparisonTable from "./ComparisonTable";
+import Recommendations from "./Recommendations";
+import Suggestions from "./Suggestions";
 
 function App() {
   const packageList = useSelector((state) => state.packages.packageList);
@@ -83,8 +85,12 @@ function App() {
       data.collected.metadata.publisher.username || "No publishers";
     const maintainers =
       data.collected.metadata.maintainers[0].email || "No maintainers";
+    const carefullness = data.score.detail.quality;
+    const communityInterest = data.score.detail.popularity;
+
     if (!selectedPackages.some((p) => p.packageName === pkg)) {
       const downloads = await fetchDownloads(pkg);
+
       dispatch(
         addPackage({
           packageName: pkg,
@@ -94,6 +100,8 @@ function App() {
           date,
           publisher,
           maintainers,
+          communityInterest,
+          carefullness,
         })
       );
       await updateHistoricalDownloads();
@@ -121,32 +129,11 @@ function App() {
         selectedPackages={selectedPackages}
       />
 
-      <div>
-        {packageList && packageList.length > 0 && selectedPackages.length <= 1
-          ? packageList.map((pkg, index) => (
-              <div key={index}>
-                <ul className="list-group">
-                  <li
-                    className={
-                      !selectedPackages.some(
-                        (selected) => selected.packageName === pkg.package.name
-                      )
-                        ? "list-group-item Packages_List"
-                        : "list-group-item active Packages_List"
-                    }
-                    onClick={() => handleSelectedPackage(pkg.package.name)}
-                  >
-                    {pkg.package.name}
-                  </li>
-                </ul>
-              </div>
-            ))
-          : ""}
-      </div>
+      <Suggestions handleSelectedPackage={handleSelectedPackage} />
       {showComparisonTable ? <ComparisonTable data={selectedPackages} /> : ""}
 
       <DownloadsChart data={historicalDownloads} />
-      <div>
+      {/* <div>
         {selectedPackages.length > 0 ? (
           <ul>
             {selectedPackages.map((pkg, index) => (
@@ -160,6 +147,41 @@ function App() {
         ) : (
           ""
         )}
+      </div>
+
+      <div>
+        {selectedPackages.length > 0 ? (
+          <ul>
+            {selectedPackages.map((pkg, index) => (
+              <div key={index}>
+                <h6>{pkg.packageName}</h6>
+
+                <p>Community Interest: {pkg.communityInterest}</p>
+              </div>
+            ))}
+          </ul>
+        ) : (
+          ""
+        )}
+      </div>
+
+      <div>
+        {selectedPackages.length > 0 ? (
+          <ul>
+            {selectedPackages.map((pkg, index) => (
+              <div key={index}>
+                <h6>{pkg.packageName}</h6>
+
+                <p>Carefullness: {pkg.carefullness}</p>
+              </div>
+            ))}
+          </ul>
+        ) : (
+          ""
+        )}
+      </div> */}
+      <div>
+        <Recommendations />
       </div>
     </>
   );

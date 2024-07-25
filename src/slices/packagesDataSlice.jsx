@@ -36,6 +36,8 @@ export const packageListSlice = createSlice({
         date,
         publisher,
         maintainers,
+        communityInterest,
+        carefullness,
       } = action.payload;
       if (!state.isSelectedPackage) return state;
 
@@ -50,6 +52,8 @@ export const packageListSlice = createSlice({
           date,
           publisher,
           maintainers,
+          communityInterest,
+          carefullness,
         });
       }
     },
