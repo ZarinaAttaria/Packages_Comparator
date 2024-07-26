@@ -48,13 +48,12 @@ const Recommendations = () => {
       <h3 className="recommendation-heading">Recommendations</h3>
       {recommendation ? (
         <>
-          <div className="recommendation-header">
-            <div className="highlight">
-              {recommendation.RecommendedPackage.packageName} is
-            </div>
-            <div className="highlight">
-              <strong> {recommendation.difference}x</strong> better!
-            </div>
+          <div className="highlight">
+            <p className="packageName">
+              {recommendation.RecommendedPackage.packageName}{" "}
+            </p>
+            <p className="packageName">is</p>
+            <p className="packageName"> {recommendation.difference}x</p> better!
           </div>
           <div className="recommendation-card">
             <div className="recommended-container">
