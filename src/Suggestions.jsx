@@ -11,7 +11,7 @@ const Suggestions = ({ handleSelectedPackage }) => {
   );
   return (
     <div className="suggestions-container">
-      {packageList && packageList.length > 0 && !showSuggestions ? (
+      {packageList && packageList.length > 0 && showSuggestions ? (
         <ul className="list-group">
           {packageList.map((pkg, index) => (
             <li

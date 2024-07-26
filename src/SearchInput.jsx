@@ -1,4 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
+import { CloseOutlined } from "@ant-design/icons";
+import _ from "lodash";
 import {
   removePackage,
   setComparisonTable,
@@ -7,18 +9,14 @@ import {
   setQuery2,
   setShowSuggestions,
 } from "./slices/packagesDataSlice";
-import _ from "lodash";
-import { CloseOutlined } from "@ant-design/icons";
 import "./App.css";
+
 function SearchInput({ searchPackage, selectedPackages }) {
   const queryData1 = useSelector((state) => state.packages.query1 || "");
   const queryData2 = useSelector((state) => state.packages.query2 || "");
   const dispatch = useDispatch();
   const debouncedSearch1 = _.debounce(() => searchPackage(queryData1), 300);
   const debouncedSearch2 = _.debounce(() => searchPackage(queryData2), 300);
-  const showComparisonTable = useSelector(
-    (state) => state.packages.showComparisonTable
-  );
 
   const handleChange = (e) => {
     dispatch(setQuery1(e.target.value));

@@ -10,24 +10,12 @@ const DownloadsChart = ({ data }) => {
     packageName: item.packageName,
   }));
 
-  const uniquePackageNames = [
-    ...new Set(formattedData.map((item) => item.packageName)),
-  ];
-
-  const colors = uniquePackageNames.reduce((acc, packageName, index) => {
-    if (index === 0) {
-      acc[packageName] = "red";
-    } else if (index === 1) {
-      acc[packageName] = "green";
-    }
-    return acc;
-  }, {});
-
   const config = {
     data: formattedData,
     xField: "day",
     yField: "downloads",
     seriesField: "packageName",
+
     xAxis: {
       title: {
         text: "Day",
@@ -42,7 +30,7 @@ const DownloadsChart = ({ data }) => {
       },
       line: {
         style: {
-          stroke: "black",
+          stroke: "black" || "#000000",
         },
       },
       tickLine: {
@@ -86,6 +74,7 @@ const DownloadsChart = ({ data }) => {
       line: {
         style: {
           lineWidth: 2,
+          stroke: "green" || "#00ff00",
         },
       },
       label: {
@@ -96,7 +85,8 @@ const DownloadsChart = ({ data }) => {
         formatter: (text) => _.round(_.divide(text, 1000), 2).toLocaleString(),
       },
     },
-    color: ({ packageName }) => colors[packageName] || "#000000",
+
+    stroke: "#ff5556",
     legend: {
       position: "right",
       marker: {

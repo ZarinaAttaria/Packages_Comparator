@@ -137,7 +137,7 @@ function App() {
         selectedPackages={selectedPackages}
       />
 
-      {!showSuggestions && (
+      {showSuggestions && (
         <Suggestions handleSelectedPackage={handleSelectedPackage} />
       )}
       {showComparisonTable ? <ComparisonTable data={selectedPackages} /> : ""}
@@ -147,53 +147,7 @@ function App() {
       ) : (
         " "
       )}
-      {/* <div>
-        {selectedPackages.length > 0 ? (
-          <ul>
-            {selectedPackages.map((pkg, index) => (
-              <div key={index}>
-                <h6>{pkg.packageName}</h6>
 
-                <p>Downloads: {pkg.downloads}</p>
-              </div>
-            ))}
-          </ul>
-        ) : (
-          ""
-        )}
-      </div>
-
-      <div>
-        {selectedPackages.length > 0 ? (
-          <ul>
-            {selectedPackages.map((pkg, index) => (
-              <div key={index}>
-                <h6>{pkg.packageName}</h6>
-
-                <p>Community Interest: {pkg.communityInterest}</p>
-              </div>
-            ))}
-          </ul>
-        ) : (
-          ""
-        )}
-      </div>
-
-      <div>
-        {selectedPackages.length > 0 ? (
-          <ul>
-            {selectedPackages.map((pkg, index) => (
-              <div key={index}>
-                <h6>{pkg.packageName}</h6>
-
-                <p>Carefullness: {pkg.carefullness}</p>
-              </div>
-            ))}
-          </ul>
-        ) : (
-          ""
-        )}
-      </div> */}
       {showComparisonTable ? <Recommendations /> : ""}
     </>
   );

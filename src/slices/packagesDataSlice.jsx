@@ -74,7 +74,7 @@ export const packageListSlice = createSlice({
       state.showComparisonTable = action.payload;
     },
     setShowSuggestions: (state, action) => {
-      state.showSuggestions = state.payload;
+      state.showSuggestions = action.payload;
     },
   },
 });
