@@ -1,6 +1,7 @@
 import React from "react";
 import { Line } from "@ant-design/charts";
 import _ from "lodash";
+import "./App.css";
 
 const DownloadsChart = ({ data }) => {
   const formattedData = data.map((item) => ({
@@ -15,9 +16,9 @@ const DownloadsChart = ({ data }) => {
 
   const colors = uniquePackageNames.reduce((acc, packageName, index) => {
     if (index === 0) {
-      acc[packageName] = "#ff5556";
+      acc[packageName] = "red";
     } else if (index === 1) {
-      acc[packageName] = "#a4e057";
+      acc[packageName] = "green";
     }
     return acc;
   }, {});
@@ -34,9 +35,9 @@ const DownloadsChart = ({ data }) => {
         offset: 0,
         spacing: 8,
         style: {
-          fontSize: 11,
-          fontWeight: 900,
-          textAlign: "start",
+          fontSize: 12,
+          fontWeight: "bold",
+          textAlign: "center",
         },
       },
       line: {
@@ -109,7 +110,12 @@ const DownloadsChart = ({ data }) => {
     },
   };
 
-  return <Line {...config} />;
+  return (
+    <div className="chart-container">
+      <h3 className="chart-title">Downloads Chart</h3>
+      <Line {...config} />
+    </div>
+  );
 };
 
 export default DownloadsChart;

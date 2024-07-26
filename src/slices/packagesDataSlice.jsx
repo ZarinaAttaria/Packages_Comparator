@@ -9,6 +9,7 @@ const initialState = {
   historicalDownloads: [],
   description: null,
   showComparisonTable: false,
+  showSuggestions: false,
 };
 
 export const packageListSlice = createSlice({
@@ -72,6 +73,9 @@ export const packageListSlice = createSlice({
     setComparisonTable: (state, action) => {
       state.showComparisonTable = action.payload;
     },
+    setShowSuggestions: (state, action) => {
+      state.showSuggestions = state.payload;
+    },
   },
 });
 
@@ -86,6 +90,7 @@ export const {
   clearSelectedPackages,
   setHistoricalDownloads,
   setComparisonTable,
+  setShowSuggestions,
 } = packageListSlice.actions;
 
 export default packageListSlice.reducer;

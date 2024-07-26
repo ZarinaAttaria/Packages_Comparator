@@ -35,7 +35,7 @@ function ComparisonTable({ data }) {
 
   return (
     <>
-      <h3>Comparison</h3>
+      <h3 className="comparison-heading">Comparison</h3>
       <Table dataSource={data} columns={columns} pagination={false} />
     </>
   );

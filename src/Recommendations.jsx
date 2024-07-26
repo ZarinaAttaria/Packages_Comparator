@@ -1,4 +1,6 @@
+import React from "react";
 import { useSelector } from "react-redux";
+import "./App.css";
 
 const Recommendations = () => {
   const selectedPackages = useSelector(
@@ -24,7 +26,7 @@ const Recommendations = () => {
     if (selectedPackages.length >= 2) {
       const score1 = calculateScore(selectedPackages[0]);
       const score2 = calculateScore(selectedPackages[1]);
-      const difference = (score1 - score2).toFixed(2);
+      const difference = Math.abs(score1 - score2).toFixed(2);
       const RecommendedPackage =
         score1 > score2 ? selectedPackages[0] : selectedPackages[1];
       const NotRecommendedPackage =
@@ -42,31 +44,47 @@ const Recommendations = () => {
   const recommendation = getRecommendation();
 
   return (
-    <>
-      <h3>RECOMMENDATIONS</h3>
+    <div className="recommendations-container">
+      <h3 className="recommendation-heading">Recommendations</h3>
       {recommendation ? (
         <>
-          <div>
-            <h6>{recommendation.RecommendedPackage.packageName}</h6> is
-            <h6>{recommendation.difference}x</h6> better!
+          <div className="recommendation-header">
+            <div className="highlight">
+              {recommendation.RecommendedPackage.packageName} is
+            </div>
+            <div className="highlight">
+              <strong> {recommendation.difference}x</strong> better!
+            </div>
           </div>
-          <div>
-            <h4>{recommendation.RecommendedPackage.packageName}</h4>
-            <p>{recommendation.RecommendedPackage.description}</p>
+          <div className="recommendation-card">
+            <div className="recommended-container">
+              <h4 className="recommended-package">
+                {recommendation.RecommendedPackage.packageName}
+              </h4>
+              <span className="badge recommended">recommended</span>
+            </div>
 
-            <p>
-              <i>Repository: {recommendation.RecommendedPackage.repository}</i>
+            <p className="description">
+              {recommendation.RecommendedPackage.description}
             </p>
-            <p>
-              Downloads:
-              {recommendation.RecommendedPackage.downloads}+
+            <p className="repository">
+              Repository:{" "}
+              <a href={recommendation.RecommendedPackage.repository}>
+                {recommendation.RecommendedPackage.repository}
+              </a>
             </p>
+            <div>
+              <div className="stats">
+                <p>Downloads:</p>
+                <strong>{recommendation.RecommendedPackage.downloads}+</strong>
+              </div>
+            </div>
           </div>
         </>
       ) : (
         <p>Select at least two packages to see the recommendation.</p>
       )}
-    </>
+    </div>
   );
 };
 

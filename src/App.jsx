@@ -7,6 +7,7 @@ import {
   setHistoricalDownloads,
   setIsSelectedPackage,
   setComparisonTable,
+  setShowSuggestions,
 } from "./slices/packagesDataSlice";
 import SearchInput from "./SearchInput";
 import DownloadsChart from "./DownloadsChart";
@@ -29,6 +30,10 @@ function App() {
   const showComparisonTable = useSelector(
     (state) => state.packages.showComparisonTable
   );
+  const showSuggestions = useSelector(
+    (state) => state.packages.showSuggestions
+  );
+
   const dispatch = useDispatch();
   const searchPackage = async (query) => {
     if (!query) return;
@@ -75,7 +80,7 @@ function App() {
   const handleSelectedPackage = async (pkg) => {
     const response = await fetch(`https://api.npms.io/v2/package/${pkg}`);
     const data = await response.json();
-    dispatch(setComparisonTable(true));
+
     const description =
       data.collected.metadata.description || "No description ";
     const repository =
@@ -112,6 +117,9 @@ function App() {
     if (selectedPackages.length >= 0) {
       dispatch(setIsSelectedPackage(false));
     }
+    if (selectedPackages.length >= 1) {
+      dispatch(setShowSuggestions(false));
+    }
   };
 
   useEffect(() => {
@@ -129,10 +137,16 @@ function App() {
         selectedPackages={selectedPackages}
       />
 
-      <Suggestions handleSelectedPackage={handleSelectedPackage} />
+      {!showSuggestions && (
+        <Suggestions handleSelectedPackage={handleSelectedPackage} />
+      )}
       {showComparisonTable ? <ComparisonTable data={selectedPackages} /> : ""}
 
-      <DownloadsChart data={historicalDownloads} />
+      {selectedPackages.length > 0 ? (
+        <DownloadsChart data={historicalDownloads} />
+      ) : (
+        " "
+      )}
       {/* <div>
         {selectedPackages.length > 0 ? (
           <ul>
@@ -180,9 +194,7 @@ function App() {
           ""
         )}
       </div> */}
-      <div>
-        <Recommendations />
-      </div>
+      {showComparisonTable ? <Recommendations /> : ""}
     </>
   );
 }
