@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CloseOutlined } from "@ant-design/icons";
 import _ from "lodash";
 import {
+  clearSelectedPackages,
   removePackage,
   setComparisonTable,
   setIsSelectedPackage,

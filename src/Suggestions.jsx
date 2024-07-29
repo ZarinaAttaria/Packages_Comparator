@@ -9,6 +9,7 @@ const Suggestions = ({ handleSelectedPackage }) => {
   const showSuggestions = useSelector(
     (state) => state.packages.showSuggestions
   );
+  
   return (
     <div className="suggestions-container">
       {packageList && packageList.length > 0 && showSuggestions ? (

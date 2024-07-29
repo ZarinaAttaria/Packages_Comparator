@@ -8,10 +8,11 @@ import {
   setIsSelectedPackage,
   setComparisonTable,
   setShowSuggestions,
+  clearSelectedPackages,
 } from "./slices/packagesDataSlice";
 import SearchInput from "./SearchInput";
 import DownloadsChart from "./DownloadsChart";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ComparisonTable from "./ComparisonTable";
 import Recommendations from "./Recommendations";
 import Suggestions from "./Suggestions";
@@ -35,6 +36,7 @@ function App() {
   );
 
   const dispatch = useDispatch();
+
   const searchPackage = async (query) => {
     if (!query) return;
     const response = await fetch(`https://api.npms.io/v2/search?q=${query}`);
@@ -65,6 +67,7 @@ function App() {
       throw new Error("Invalid downloads data");
     }
   };
+
   const updateHistoricalDownloads = async () => {
     let allHistoricalData = [];
     let selectedPackagesArray = selectedPackages.map((p) => p.packageName);
@@ -79,36 +82,40 @@ function App() {
 
   const handleSelectedPackage = async (pkg) => {
     const response = await fetch(`https://api.npms.io/v2/package/${pkg}`);
+    if (!response.ok) {
+      console.error(`Package ${pkg} not found`);
+
+      return;
+    }
     const data = await response.json();
 
     const description =
-      data.collected.metadata.description || "No description ";
+      data.collected?.metadata?.description || "No description";
     const repository =
-      data.collected.metadata.links.repository || "No repository ";
-    const date = data.collected.metadata.date || "No last Modified date";
+      data.collected?.metadata?.links?.repository || "No repository";
+    const date = data.collected?.metadata?.date || "No last Modified date";
     const publisher =
-      data.collected.metadata.publisher.username || "No publishers";
+      data.collected?.metadata?.publisher?.username || "No publishers";
     const maintainers =
-      data.collected.metadata.maintainers[0].email || "No maintainers";
-    const carefullness = data.score.detail.quality;
-    const communityInterest = data.score.detail.popularity;
+      data.collected?.metadata?.maintainers?.[0]?.email || "No maintainers";
+    const carefullness = data.score?.detail?.quality || 0;
+    const communityInterest = data.score?.detail?.popularity || 0;
 
     if (!selectedPackages.some((p) => p.packageName === pkg)) {
       const downloads = await fetchDownloads(pkg);
 
-      dispatch(
-        addPackage({
-          packageName: pkg,
-          downloads,
-          description,
-          repository,
-          date,
-          publisher,
-          maintainers,
-          communityInterest,
-          carefullness,
-        })
-      );
+      const newPackage = {
+        packageName: pkg,
+        downloads,
+        description,
+        repository,
+        date,
+        publisher,
+        maintainers,
+        communityInterest,
+        carefullness,
+      };
+      dispatch(addPackage(newPackage));
       await updateHistoricalDownloads();
     } else {
       dispatch(removePackage(pkg));
@@ -119,6 +126,11 @@ function App() {
     }
     if (selectedPackages.length >= 1) {
       dispatch(setShowSuggestions(false));
+      dispatch(setSelectPackage(false));
+    }
+    if (selectedPackages.length >= 2) {
+      dispatch(clearSelectedPackages());
+      selectedPackages.push(newPackage);
     }
   };
 
