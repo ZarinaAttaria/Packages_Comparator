@@ -36,12 +36,13 @@ function App() {
   );
 
   const dispatch = useDispatch();
-
+  const dataResults = [];
   const searchPackage = async (query) => {
     if (!query) return;
     const response = await fetch(`https://api.npms.io/v2/search?q=${query}`);
     const data = await response.json();
     dispatch(setpackageList(data.results));
+    return data.results;
   };
 
   const fetchDownloads = async (pkg) => {
@@ -115,22 +116,19 @@ function App() {
         communityInterest,
         carefullness,
       };
-      dispatch(addPackage(newPackage));
+      if (selectedPackages.length <= 1) {
+        dispatch(addPackage(newPackage));
+      }
       await updateHistoricalDownloads();
     } else {
       dispatch(removePackage(pkg));
       await updateHistoricalDownloads();
     }
-    if (selectedPackages.length >= 0) {
+    if (selectedPackages.length >= 1) {
       dispatch(setIsSelectedPackage(false));
     }
     if (selectedPackages.length >= 1) {
       dispatch(setShowSuggestions(false));
-      dispatch(setSelectPackage(false));
-    }
-    if (selectedPackages.length >= 2) {
-      dispatch(clearSelectedPackages());
-      selectedPackages.push(newPackage);
     }
   };
 
@@ -147,6 +145,7 @@ function App() {
       <SearchInput
         searchPackage={searchPackage}
         selectedPackages={selectedPackages}
+        handleSelectedPackage={handleSelectedPackage}
       />
 
       {showSuggestions && (

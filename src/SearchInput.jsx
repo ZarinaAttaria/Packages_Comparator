@@ -2,33 +2,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { CloseOutlined } from "@ant-design/icons";
 import _ from "lodash";
 import {
-  clearSelectedPackages,
   removePackage,
   setComparisonTable,
-  setIsSelectedPackage,
-  setQuery1,
-  setQuery2,
+  setQuery,
   setShowSuggestions,
 } from "./slices/packagesDataSlice";
 import "./App.css";
+import { Select } from "antd";
 
-function SearchInput({ searchPackage, selectedPackages }) {
-  const queryData1 = useSelector((state) => state.packages.query1 || "");
-  const queryData2 = useSelector((state) => state.packages.query2 || "");
+function SearchInput({
+  searchPackage,
+  selectedPackages,
+  handleSelectedPackage,
+}) {
+  const queryData = useSelector((state) => state.packages.query || "");
+  const packageList = useSelector((state) => state.packages.packageList);
   const dispatch = useDispatch();
-  const debouncedSearch1 = _.debounce(() => searchPackage(queryData1), 300);
-  const debouncedSearch2 = _.debounce(() => searchPackage(queryData2), 300);
+  const debouncedSearch = _.debounce((query) => searchPackage(query), 300);
 
-  const handleChange = (e) => {
-    dispatch(setQuery1(e.target.value));
-    debouncedSearch1(e.target.value);
-    dispatch(setShowSuggestions(true));
+  const handleChange = (value) => {
+    dispatch(setQuery(value));
+    debouncedSearch(value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    debouncedSearch1(queryData1);
-    debouncedSearch2(queryData2);
+    debouncedSearch(queryData);
     dispatch(setComparisonTable(true));
     dispatch(setShowSuggestions(false));
   };
@@ -37,32 +36,33 @@ function SearchInput({ searchPackage, selectedPackages }) {
     dispatch(removePackage(pkg.packageName));
   };
 
-  const handleChangeSearchInput2 = (e) => {
-    dispatch(setIsSelectedPackage(true));
-    dispatch(setQuery2(e.target.value));
-    debouncedSearch2(e.target.value);
-    dispatch(setShowSuggestions(true));
+  const handleSelect = (pkgName) => {
+    handleSelectedPackage(pkgName);
   };
+
+  const handleDeselect = (pkgName) => {
+    dispatch(removePackage(pkgName));
+  };
+
+  const options = (packageList || []).map((pkg) => ({
+    label: pkg.package.name,
+    value: pkg.package.name,
+  }));
 
   return (
     <div className="search-input-container">
       <form className="search-form" onSubmit={handleSubmit}>
-        <input
-          className="search-input"
-          type="search"
-          value={queryData1}
-          onChange={handleChange}
-          placeholder="Search"
-          aria-label="Search"
-        />
-        <h2 className="vs-heading">Vs</h2>
-        <input
-          className="search-input"
-          type="search"
-          value={queryData2}
-          onChange={handleChangeSearchInput2}
-          placeholder="Search"
-          aria-label="Search"
+        <Select
+          mode="multiple"
+          allowClear
+          style={{ width: "100%" }}
+          placeholder="Please select"
+          onSearch={handleChange}
+          onSelect={handleSelect}
+          onDeselect={handleDeselect}
+          options={options}
+          showSearch
+          searchValue={queryData}
         />
         <button className="search-button" type="submit">
           Compare

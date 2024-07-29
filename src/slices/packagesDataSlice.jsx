@@ -2,15 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   packageList: null,
-  query1: null,
-  query2: null,
+  query: null,
+
   selectedPackages: [],
   isSelectedPackage: true,
   historicalDownloads: [],
   description: null,
   showComparisonTable: false,
   showSuggestions: false,
- 
 };
 
 export const packageListSlice = createSlice({
@@ -20,12 +19,10 @@ export const packageListSlice = createSlice({
     setpackageList: (state, action) => {
       state.packageList = action.payload;
     },
-    setQuery1: (state, action) => {
-      state.query1 = action.payload;
+    setQuery: (state, action) => {
+      state.query = action.payload;
     },
-    setQuery2: (state, action) => {
-      state.query2 = action.payload;
-    },
+
     setIsSelectedPackage: (state, action) => {
       state.isSelectedPackage = action.payload;
     },
@@ -77,14 +74,12 @@ export const packageListSlice = createSlice({
     setShowSuggestions: (state, action) => {
       state.showSuggestions = action.payload;
     },
-   
   },
 });
 
 export const {
   setpackageList,
-  setQuery1,
-  setQuery2,
+  setQuery,
 
   setIsSelectedPackage,
   addPackage,
@@ -93,7 +88,6 @@ export const {
   setHistoricalDownloads,
   setComparisonTable,
   setShowSuggestions,
-
 } = packageListSlice.actions;
 
 export default packageListSlice.reducer;
