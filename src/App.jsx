@@ -15,7 +15,6 @@ import DownloadsChart from "./DownloadsChart";
 import { useEffect, useState } from "react";
 import ComparisonTable from "./ComparisonTable";
 import Recommendations from "./Recommendations";
-import Suggestions from "./Suggestions";
 
 function App() {
   const packageList = useSelector((state) => state.packages.packageList);
@@ -116,19 +115,13 @@ function App() {
         communityInterest,
         carefullness,
       };
-      if (selectedPackages.length <= 1) {
-        dispatch(addPackage(newPackage));
-      }
+
+      dispatch(addPackage(newPackage));
+
       await updateHistoricalDownloads();
     } else {
       dispatch(removePackage(pkg));
       await updateHistoricalDownloads();
-    }
-    if (selectedPackages.length >= 1) {
-      dispatch(setIsSelectedPackage(false));
-    }
-    if (selectedPackages.length >= 1) {
-      dispatch(setShowSuggestions(false));
     }
   };
 
@@ -148,9 +141,6 @@ function App() {
         handleSelectedPackage={handleSelectedPackage}
       />
 
-      {showSuggestions && (
-        <Suggestions handleSelectedPackage={handleSelectedPackage} />
-      )}
       {showComparisonTable ? <ComparisonTable data={selectedPackages} /> : ""}
 
       {selectedPackages.length > 0 ? (

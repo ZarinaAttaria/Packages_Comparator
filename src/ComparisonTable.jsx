@@ -1,4 +1,5 @@
 import React from "react";
+import "./App.css";
 
 function ComparisonTable({ data }) {
   if (!Array.isArray(data)) {
@@ -9,7 +10,7 @@ function ComparisonTable({ data }) {
   return (
     <>
       <h3 className="comparison-heading">Comparison</h3>
-      <table className="table table-striped">
+      <table className="table">
         <thead>
           <tr>
             <th scope="col">#</th>

@@ -70,6 +70,7 @@ body {
 .badge {
   background-color: rgb(39, 111, 219);
   height: 30%;
+  margin-top: 5px;
 }
 .recommended-container {
   display: flex;
@@ -84,12 +85,20 @@ body {
   display: flex;
   flex-direction: row;
 }
-.comparison-heading,
+
 .chart-title {
   font-size: 30px;
   font-weight: bold;
   text-align: center;
+  margin-top: 20px;
 }
+.comparison-heading {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 .suggestions-container {
   width: 100%;
 
@@ -200,4 +209,45 @@ body {
   text-align: center;
   color: #999;
   font-style: italic;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.table thead {
+  background-color: #f4f4f4;
+}
+
+.table th {
+  padding: 12px;
+  text-align: left;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+}
+
+.table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+  background-color: #e0e0e0;
+}
+
+.table a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.table a:hover {
+  text-decoration: underline;
 }

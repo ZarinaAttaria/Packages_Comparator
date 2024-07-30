@@ -24,13 +24,26 @@ const Recommendations = () => {
 
   const getRecommendation = () => {
     if (selectedPackages.length >= 2) {
-      const score1 = calculateScore(selectedPackages[0]);
-      const score2 = calculateScore(selectedPackages[1]);
-      const difference = Math.abs(score1 - score2).toFixed(2);
-      const RecommendedPackage =
-        score1 > score2 ? selectedPackages[0] : selectedPackages[1];
-      const NotRecommendedPackage =
-        score1 > score2 ? selectedPackages[1] : selectedPackages[0];
+      const scores = selectedPackages.map((pkg) => ({
+        ...pkg,
+        score: calculateScore(pkg),
+      }));
+      scores.sort((a, b) => b.score - a.score);
+
+      const RecommendedPackage = scores[0];
+      const NotRecommendedPackage = scores.slice(1);
+      const difference = Math.abs(
+        RecommendedPackage.score - NotRecommendedPackage[0].score
+      ).toFixed(2);
+      console.log(
+        "🚀 ~ getRecommendation ~ RecommendedPackage:",
+        RecommendedPackage
+      );
+      console.log(
+        "🚀 ~ getRecommendation ~ NotRecommendedPackage:",
+        NotRecommendedPackage
+      );
+      console.log("🚀 ~ getRecommendation ~ difference:", difference);
 
       return {
         RecommendedPackage,

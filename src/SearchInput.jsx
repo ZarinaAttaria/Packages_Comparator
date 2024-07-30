@@ -32,10 +32,6 @@ function SearchInput({
     dispatch(setShowSuggestions(false));
   };
 
-  const handleRemovePackage = (pkg) => {
-    dispatch(removePackage(pkg.packageName));
-  };
-
   const handleSelect = (pkgName) => {
     handleSelectedPackage(pkgName);
   };
@@ -69,7 +65,7 @@ function SearchInput({
         </button>
       </form>
 
-      {selectedPackages.length > 0 ? (
+      {/* {selectedPackages.length > 0 ? (
         <ul className="selected-packages-list">
           {selectedPackages.map((pkg, index) => (
             <li key={index} className="selected-package-item">
@@ -83,7 +79,7 @@ function SearchInput({
         </ul>
       ) : (
         <p className="no-packages-message">No packages selected.</p>
-      )}
+      )} */}
     </div>
   );
 }
