@@ -35,15 +35,6 @@ const Recommendations = () => {
       const difference = Math.abs(
         RecommendedPackage.score - NotRecommendedPackage[0].score
       ).toFixed(2);
-      console.log(
-        "🚀 ~ getRecommendation ~ RecommendedPackage:",
-        RecommendedPackage
-      );
-      console.log(
-        "🚀 ~ getRecommendation ~ NotRecommendedPackage:",
-        NotRecommendedPackage
-      );
-      console.log("🚀 ~ getRecommendation ~ difference:", difference);
 
       return {
         RecommendedPackage,

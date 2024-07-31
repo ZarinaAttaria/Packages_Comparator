@@ -10,6 +10,7 @@ const initialState = {
   description: null,
   showComparisonTable: false,
   showSuggestions: false,
+  downloadsFilter: "last-week",
 };
 
 export const packageListSlice = createSlice({
@@ -28,13 +29,16 @@ export const packageListSlice = createSlice({
     },
     addPackage: (state, action) => {
       const {
-        packageName,
+        packageName: pkg,
         downloads,
-        description,
         repository,
+        npm,
+        homepage,
+        stars,
+        issues,
+        version,
         date,
-        publisher,
-        maintainers,
+        size,
         communityInterest,
         carefullness,
       } = action.payload;
@@ -44,13 +48,16 @@ export const packageListSlice = createSlice({
         !state.selectedPackages.some((pkg) => pkg.packageName === packageName)
       ) {
         state.selectedPackages.push({
-          packageName,
+          packageName: pkg,
           downloads,
-          description,
           repository,
+          npm,
+          homepage,
+          stars,
+          issues,
+          version,
           date,
-          publisher,
-          maintainers,
+          size,
           communityInterest,
           carefullness,
         });
@@ -74,6 +81,9 @@ export const packageListSlice = createSlice({
     setShowSuggestions: (state, action) => {
       state.showSuggestions = action.payload;
     },
+    setDownloadsFilter: (state, action) => {
+      state.downloadsFilter = action.payload;
+    },
   },
 });
 
@@ -88,6 +98,7 @@ export const {
   setHistoricalDownloads,
   setComparisonTable,
   setShowSuggestions,
+  setDownloadsFilter,
 } = packageListSlice.actions;
 
 export default packageListSlice.reducer;

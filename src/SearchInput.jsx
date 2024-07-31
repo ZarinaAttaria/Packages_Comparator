@@ -33,11 +33,17 @@ function SearchInput({
   };
 
   const handleSelect = (pkgName) => {
+    dispatch(setQuery(""));
+
     handleSelectedPackage(pkgName);
   };
 
   const handleDeselect = (pkgName) => {
     dispatch(removePackage(pkgName));
+  };
+
+  const handleFocus = () => {
+    dispatch(setQuery(""));
   };
 
   const options = (packageList || []).map((pkg) => ({
@@ -56,6 +62,7 @@ function SearchInput({
           onSearch={handleChange}
           onSelect={handleSelect}
           onDeselect={handleDeselect}
+          onFocus={handleFocus}
           options={options}
           showSearch
           searchValue={queryData}

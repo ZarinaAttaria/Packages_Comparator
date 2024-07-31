@@ -9,6 +9,7 @@ import {
   setComparisonTable,
   setShowSuggestions,
   clearSelectedPackages,
+  setDownloadsFilter,
 } from "./slices/packagesDataSlice";
 import SearchInput from "./SearchInput";
 import DownloadsChart from "./DownloadsChart";
@@ -33,7 +34,9 @@ function App() {
   const showSuggestions = useSelector(
     (state) => state.packages.showSuggestions
   );
-
+  const downloadsFilter = useSelector(
+    (state) => state.packages.downloadsFilter
+  );
   const dispatch = useDispatch();
   const dataResults = [];
   const searchPackage = async (query) => {
@@ -54,7 +57,7 @@ function App() {
 
   const fetchHistoricalDownloads = async (pkg) => {
     const response = await fetch(
-      `https://api.npmjs.org/downloads/range/last-month/${pkg}`
+      `https://api.npmjs.org/downloads/range/${downloadsFilter}/${pkg}`
     );
     const data = await response.json();
 
@@ -84,20 +87,20 @@ function App() {
     const response = await fetch(`https://api.npms.io/v2/package/${pkg}`);
     if (!response.ok) {
       console.error(`Package ${pkg} not found`);
-
       return;
     }
     const data = await response.json();
 
-    const description =
-      data.collected?.metadata?.description || "No description";
     const repository =
-      data.collected?.metadata?.links?.repository || "No repository";
+      data.collected?.metadata?.repository?.url || "No repository";
+    const npm = data.collected?.metadata?.links?.npm || "No Npm";
+    const homepage = data.collected?.metadata?.links?.homepage || "No Homepage";
+    const stars = data.collected?.metadata?.github?.starsCount || "Unknown";
+    const issues = data.collected?.metadata?.github?.issues?.count || "Unknown";
+    const version = data.collected?.metadata?.version || "Unknown";
     const date = data.collected?.metadata?.date || "No last Modified date";
-    const publisher =
-      data.collected?.metadata?.publisher?.username || "No publishers";
-    const maintainers =
-      data.collected?.metadata?.maintainers?.[0]?.email || "No maintainers";
+    const size =
+      data.collected?.metadata?.source?.files?.readmeSize || "Unknown";
     const carefullness = data.score?.detail?.quality || 0;
     const communityInterest = data.score?.detail?.popularity || 0;
 
@@ -107,17 +110,19 @@ function App() {
       const newPackage = {
         packageName: pkg,
         downloads,
-        description,
         repository,
+        npm,
+        homepage,
+        stars,
+        issues,
+        version,
         date,
-        publisher,
-        maintainers,
+        size,
         communityInterest,
         carefullness,
       };
 
       dispatch(addPackage(newPackage));
-
       await updateHistoricalDownloads();
     } else {
       dispatch(removePackage(pkg));
@@ -131,10 +136,22 @@ function App() {
     } else {
       dispatch(setHistoricalDownloads([]));
     }
-  }, [selectedPackages, dispatch]);
+  }, [selectedPackages, dispatch, downloadsFilter]);
+
+  const handleDownloadsFilter = (value) => {
+    dispatch(setDownloadsFilter(value));
+  };
 
   return (
     <>
+      <div>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <a className="navbar-brand" href="#">
+            Npm Packages Comparator
+          </a>
+        </nav>
+      </div>
+
       <SearchInput
         searchPackage={searchPackage}
         selectedPackages={selectedPackages}
@@ -143,6 +160,61 @@ function App() {
 
       {showComparisonTable ? <ComparisonTable data={selectedPackages} /> : ""}
 
+      <div className="dropdown ">
+        <button
+          className="btn btn-secondary dropdown-toggle filter_Dropdown"
+          type="button"
+          id="dropdownMenuButton1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Downloads
+        </button>
+        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <a
+            className="dropdown-item"
+            href="#"
+            onClick={() => handleDownloadsFilter("last-month")}
+          >
+            1 Month
+          </a>
+          <a
+            className="dropdown-item"
+            href="#"
+            onClick={() => handleDownloadsFilter("last-year")}
+          >
+            1 year
+          </a>
+          <a
+            className="dropdown-item"
+            href="#"
+            onClick={() => handleDownloadsFilter("2022-07-30:2024-07-30")}
+          >
+            2 years
+          </a>
+          <a
+            className="dropdown-item"
+            href="#"
+            onClick={() => handleDownloadsFilter("2019-07-30:2024-07-30")}
+          >
+            5 years
+          </a>
+          <a
+            className="dropdown-item"
+            href="#"
+            onClick={() => handleDownloadsFilter("2021-07-30:2024-07-30")}
+          >
+            3 years
+          </a>
+          <a
+            className="dropdown-item"
+            href="#"
+            onClick={() => handleDownloadsFilter("2024-05-30:2024-07-30")}
+          >
+            2 months
+          </a>
+        </div>
+      </div>
       {selectedPackages.length > 0 ? (
         <DownloadsChart data={historicalDownloads} />
       ) : (

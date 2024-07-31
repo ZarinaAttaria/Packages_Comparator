@@ -2,10 +2,7 @@ import React from "react";
 import "./App.css";
 
 function ComparisonTable({ data }) {
-  if (!Array.isArray(data)) {
-    console.error("Data is not an array or is undefined", data);
-    return <div>Invalid data</div>;
-  }
+  console.log("ComparisonTable data:", data); // Debugging line
 
   return (
     <>
@@ -15,11 +12,15 @@ function ComparisonTable({ data }) {
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Description</th>
             <th scope="col">Repository</th>
-            <th scope="col">Last Modified Date</th>
-            <th scope="col">Authors/Publishers</th>
-            <th scope="col">Maintainers</th>
+            <th scope="col">Npm</th>
+            <th scope="col">Homepage</th>
+            <th scope="col">Stars</th>
+            <th scope="col">Issues</th>
+            <th scope="col">Version</th>
+            <th scope="col">Updated</th>
+            <th scope="col">Created</th>
+            <th scope="col">Size</th>
           </tr>
         </thead>
         <tbody>
@@ -27,15 +28,23 @@ function ComparisonTable({ data }) {
             <tr key={index}>
               <th scope="row">{index + 1}</th>
               <td>{pkg.packageName || "N/A"}</td>
-              <td>{pkg.description || "N/A"}</td>
               <td>
                 <a href={pkg.repository?.url || "#"}>
                   {pkg.repository || "N/A"}
                 </a>
               </td>
-              <td>{pkg.date || "N/A"}</td>
-              <td>{pkg.publisher || "Unknown"}</td>
-              <td>{pkg.maintainers || "Unknown"}</td>
+              <td>
+                <a href={pkg.npm || "#"}>{pkg.npm || "N/A"}</a>
+              </td>
+              <td>
+                <a href={pkg.homepage || "#"}>{pkg.homepage || "N/A"}</a>
+              </td>
+              <td>{pkg.stars || "N/A"}</td>
+              <td>{pkg.issues || "Unknown"}</td>
+              <td>{pkg.version || "Unknown"}</td>
+              <td>{pkg.date || "Unknown"}</td>
+              <td>{pkg.date || "Unknown"}</td>
+              <td>{pkg.size || "Unknown"}</td>
             </tr>
           ))}
         </tbody>
