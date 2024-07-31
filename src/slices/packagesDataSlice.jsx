@@ -29,7 +29,7 @@ export const packageListSlice = createSlice({
     },
     addPackage: (state, action) => {
       const {
-        packageName: pkg,
+        packageName,
         downloads,
         repository,
         npm,
@@ -48,7 +48,7 @@ export const packageListSlice = createSlice({
         !state.selectedPackages.some((pkg) => pkg.packageName === packageName)
       ) {
         state.selectedPackages.push({
-          packageName: pkg,
+          packageName,
           downloads,
           repository,
           npm,

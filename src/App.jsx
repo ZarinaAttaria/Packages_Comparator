@@ -95,12 +95,11 @@ function App() {
       data.collected?.metadata?.repository?.url || "No repository";
     const npm = data.collected?.metadata?.links?.npm || "No Npm";
     const homepage = data.collected?.metadata?.links?.homepage || "No Homepage";
-    const stars = data.collected?.metadata?.github?.starsCount || "Unknown";
-    const issues = data.collected?.metadata?.github?.issues?.count || "Unknown";
+    const stars = data.collected?.github?.starsCount || "Unknown";
+    const issues = data.collected?.github?.issues?.count || "Unknown";
     const version = data.collected?.metadata?.version || "Unknown";
     const date = data.collected?.metadata?.date || "No last Modified date";
-    const size =
-      data.collected?.metadata?.source?.files?.readmeSize || "Unknown";
+    const size = data.collected?.source?.files?.readmeSize || "Unknown";
     const carefullness = data.score?.detail?.quality || 0;
     const communityInterest = data.score?.detail?.popularity || 0;
 
