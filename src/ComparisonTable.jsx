@@ -18,8 +18,7 @@ function ComparisonTable({ data }) {
             <th scope="col">Stars</th>
             <th scope="col">Issues</th>
             <th scope="col">Version</th>
-            <th scope="col">Updated</th>
-            <th scope="col">Created</th>
+
             <th scope="col">Size</th>
           </tr>
         </thead>
@@ -42,8 +41,7 @@ function ComparisonTable({ data }) {
               <td>{pkg.stars || "N/A"}</td>
               <td>{pkg.issues || "Unknown"}</td>
               <td>{pkg.version || "Unknown"}</td>
-              <td>{pkg.date || "Unknown"}</td>
-              <td>{pkg.date || "Unknown"}</td>
+
               <td>{pkg.size || "Unknown"}</td>
             </tr>
           ))}

@@ -37,7 +37,7 @@ export const packageListSlice = createSlice({
         stars,
         issues,
         version,
-        date,
+
         size,
         communityInterest,
         carefullness,
@@ -56,7 +56,7 @@ export const packageListSlice = createSlice({
           stars,
           issues,
           version,
-          date,
+
           size,
           communityInterest,
           carefullness,

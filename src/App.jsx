@@ -16,6 +16,7 @@ import DownloadsChart from "./DownloadsChart";
 import { useEffect, useState } from "react";
 import ComparisonTable from "./ComparisonTable";
 import Recommendations from "./Recommendations";
+import DownloadsFilter from "./DownloadsFilter";
 
 function App() {
   const packageList = useSelector((state) => state.packages.packageList);
@@ -98,7 +99,7 @@ function App() {
     const stars = data.collected?.github?.starsCount || "Unknown";
     const issues = data.collected?.github?.issues?.count || "Unknown";
     const version = data.collected?.metadata?.version || "Unknown";
-    const date = data.collected?.metadata?.date || "No last Modified date";
+    
     const size = data.collected?.source?.files?.readmeSize || "Unknown";
     const carefullness = data.score?.detail?.quality || 0;
     const communityInterest = data.score?.detail?.popularity || 0;
@@ -115,7 +116,7 @@ function App() {
         stars,
         issues,
         version,
-        date,
+       
         size,
         communityInterest,
         carefullness,
@@ -137,10 +138,6 @@ function App() {
     }
   }, [selectedPackages, dispatch, downloadsFilter]);
 
-  const handleDownloadsFilter = (value) => {
-    dispatch(setDownloadsFilter(value));
-  };
-
   return (
     <>
       <div>
@@ -159,61 +156,7 @@ function App() {
 
       {showComparisonTable ? <ComparisonTable data={selectedPackages} /> : ""}
 
-      <div className="dropdown ">
-        <button
-          className="btn btn-secondary dropdown-toggle filter_Dropdown"
-          type="button"
-          id="dropdownMenuButton1"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          Downloads
-        </button>
-        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <a
-            className="dropdown-item"
-            href="#"
-            onClick={() => handleDownloadsFilter("last-month")}
-          >
-            1 Month
-          </a>
-          <a
-            className="dropdown-item"
-            href="#"
-            onClick={() => handleDownloadsFilter("last-year")}
-          >
-            1 year
-          </a>
-          <a
-            className="dropdown-item"
-            href="#"
-            onClick={() => handleDownloadsFilter("2022-07-30:2024-07-30")}
-          >
-            2 years
-          </a>
-          <a
-            className="dropdown-item"
-            href="#"
-            onClick={() => handleDownloadsFilter("2019-07-30:2024-07-30")}
-          >
-            5 years
-          </a>
-          <a
-            className="dropdown-item"
-            href="#"
-            onClick={() => handleDownloadsFilter("2021-07-30:2024-07-30")}
-          >
-            3 years
-          </a>
-          <a
-            className="dropdown-item"
-            href="#"
-            onClick={() => handleDownloadsFilter("2024-05-30:2024-07-30")}
-          >
-            2 months
-          </a>
-        </div>
-      </div>
+      <DownloadsFilter />
       {selectedPackages.length > 0 ? (
         <DownloadsChart data={historicalDownloads} />
       ) : (
