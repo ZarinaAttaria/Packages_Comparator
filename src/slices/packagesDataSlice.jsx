@@ -35,7 +35,7 @@ export const packageListSlice = createSlice({
         npm,
         homepage,
         stars,
-        issues,
+        dependencies,
         version,
         description,
         size,
@@ -55,7 +55,7 @@ export const packageListSlice = createSlice({
           npm,
           homepage,
           stars,
-          issues,
+          dependencies,
           version,
           description,
 

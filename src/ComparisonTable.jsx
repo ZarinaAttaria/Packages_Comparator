@@ -16,9 +16,8 @@ function ComparisonTable({ data }) {
             <th scope="col">Npm</th>
             <th scope="col">Homepage</th>
             <th scope="col">Stars</th>
-            <th scope="col">Issues</th>
+            <th scope="col">Dependencies</th>
             <th scope="col">Version</th>
-
             <th scope="col">Size</th>
           </tr>
         </thead>
@@ -28,26 +27,31 @@ function ComparisonTable({ data }) {
               <th scope="row">{index + 1}</th>
               <td>{pkg.packageName || "N/A"}</td>
               <td>
-                <a href={pkg.links?.repository || "#"}>
-                  <img src="github (2).png" />
+                <a href={pkg.repository || "#"}>
+                  <img src="github (3).png" className="link-icon" />
                 </a>
               </td>
               <td>
                 <a href={pkg.npm || "#"}>
-                  {" "}
-                  <img src="npm (2).png" />
+                  <img src="npm (3).png" />
                 </a>
               </td>
               <td>
                 <a href={pkg.homepage || "#"}>
-                  {" "}
-                  <img src="website (2).png" />
+                  <img src="link.png" className="link-icon" />
                 </a>
               </td>
               <td>{pkg.stars || "N/A"}</td>
-              <td>{pkg.issues || "Unknown"}</td>
+              <td>
+                {pkg.dependencies.length > 0
+                  ? pkg.dependencies.map((dep, depIndex) => (
+                      <p key={depIndex}>
+                        {dep.name} : {dep.version}
+                      </p>
+                    ))
+                  : "Unknown"}
+              </td>
               <td>{pkg.version || "Unknown"}</td>
-
               <td>
                 {pkg.size ? (pkg.size / 1000).toFixed(1) + "KB" : "Unknown"}
               </td>

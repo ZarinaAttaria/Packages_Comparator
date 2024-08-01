@@ -113,6 +113,13 @@ function App() {
     const size = data.collected?.source?.files?.readmeSize || "Unknown";
     const carefullness = data.score?.detail?.quality || 0;
     const communityInterest = data.score?.detail?.popularity || 0;
+
+    const dependenciesObj = data.collected?.metadata?.dependencies || {};
+    const dependencies = Object.keys(dependenciesObj).map((dep) => ({
+      name: dep,
+      version: dependenciesObj[dep],
+    }));
+
     const health = data.evaluation?.quality?.health || 0;
 
     if (!selectedPackages.some((p) => p.packageName === pkg)) {
@@ -125,7 +132,7 @@ function App() {
         npm,
         homepage,
         stars,
-        issues,
+        dependencies,
         version,
         description,
 

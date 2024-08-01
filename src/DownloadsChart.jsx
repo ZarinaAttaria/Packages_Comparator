@@ -33,7 +33,7 @@ const DownloadsChart = ({ data, selectedPackages }) => {
             currentWeek.length;
           weeklyData.push({
             day: currentWeekStart.toDate(),
-            downloads: weekAverage,
+            downloads: Math.round(weekAverage),
             packageName: currentWeek[0].packageName,
           });
           currentWeekStart = currentWeekStart.add(1, "week");
@@ -47,7 +47,7 @@ const DownloadsChart = ({ data, selectedPackages }) => {
           currentWeek.length;
         weeklyData.push({
           day: currentWeekStart.toDate(),
-          downloads: weekAverage,
+          downloads: Math.round(weekAverage),
           packageName: currentWeek[0].packageName,
         });
       }

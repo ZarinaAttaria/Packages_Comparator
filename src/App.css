@@ -217,7 +217,7 @@ body {
 }
 
 .table thead {
-  background-color: #f4f4f4;
+  background-color: #e3f2fd;
 }
 
 .table th {
@@ -238,7 +238,7 @@ body {
 }
 
 .table tbody tr:hover {
-  background-color: #e0e0e0;
+  background-color: #d4d9db;
 }
 
 .table a {
@@ -281,4 +281,7 @@ body {
 .logo {
   height: 5%;
   width: 5%;
+}
+.link-icon {
+  margin-left: 10%;
 }
