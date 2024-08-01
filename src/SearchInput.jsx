@@ -57,7 +57,7 @@ function SearchInput({
         <Select
           mode="multiple"
           allowClear
-          style={{ width: "100%" }}
+          style={{ width: "100%", lineHeight: "1.5rem" }}
           placeholder="Please select"
           onSearch={handleChange}
           onSelect={handleSelect}
@@ -66,6 +66,7 @@ function SearchInput({
           options={options}
           showSearch
           searchValue={queryData}
+          size="large"
         />
         <button className="search-button" type="submit">
           Compare

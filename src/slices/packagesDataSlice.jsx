@@ -37,10 +37,11 @@ export const packageListSlice = createSlice({
         stars,
         issues,
         version,
-
+        description,
         size,
         communityInterest,
         carefullness,
+        health,
       } = action.payload;
       if (!state.isSelectedPackage) return state;
 
@@ -56,10 +57,12 @@ export const packageListSlice = createSlice({
           stars,
           issues,
           version,
+          description,
 
           size,
           communityInterest,
           carefullness,
+          health,
         });
       }
     },

@@ -1,14 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { setDownloadsFilter } from "./slices/packagesDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 
 function DownloadsFilter() {
+  const [filterName, setFilterName] = useState("1 week");
   const dispatch = useDispatch();
 
   const handleDownloadsFilter = (value) => {
     dispatch(setDownloadsFilter(value));
+    console.log("Value:", value);
+    switch (value) {
+      case "last-month":
+        setFilterName("1 month");
+        break;
+      case "last-year":
+        setFilterName("1 year");
+        break;
+
+      case "2022-07-31:2024-07-31":
+        setFilterName("2 years");
+        break;
+      case "2021-07-31:2024-07-31":
+        setFilterName("3 years");
+        break;
+      case "2019-07-31:2024-07-31":
+        setFilterName("5 years");
+        break;
+      case "2014-07-31:2024-07-31":
+        setFilterName("All Time");
+        break;
+      case "2024-05-31:2024-07-31":
+        setFilterName("2 months");
+        break;
+    }
   };
   const downloadsFilter = useSelector(
     (state) => state.packages.downloadsFilter
@@ -27,7 +53,7 @@ function DownloadsFilter() {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            {downloadsFilter}
+            {filterName}
           </button>
 
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -96,6 +122,19 @@ function DownloadsFilter() {
               }
             >
               2 months
+            </a>
+            <a
+              className="dropdown-item"
+              href="#"
+              onClick={() =>
+                handleDownloadsFilter(
+                  `${dayjs()
+                    .subtract(10, "year")
+                    .format("YYYY-MM-DD")}:${dayjs().format("YYYY-MM-DD")}`
+                )
+              }
+            >
+              All Time
             </a>
           </div>
         </div>

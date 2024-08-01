@@ -52,36 +52,76 @@ const Recommendations = () => {
       <h3 className="recommendation-heading">Recommendations</h3>
       {recommendation ? (
         <>
-          <div className="highlight">
-            <p className="packageName">
-              {recommendation.RecommendedPackage.packageName}{" "}
-            </p>
-            <p className="packageName">is</p>
-            <p className="packageName"> {recommendation.difference}x</p> better!
-          </div>
           <div className="recommendation-card">
+            <div className="highlight">
+              <p className="packageName">
+                ✨{recommendation.RecommendedPackage.packageName}{" "}
+              </p>
+              <p className="packageName">is</p>
+              <p className="packageName">
+                {" "}
+                {recommendation.difference > 10000
+                  ? (recommendation.difference / 10000).toFixed(1)
+                  : recommendation.difference}
+                x
+              </p>{" "}
+              better!✨
+            </div>
+
             <div className="recommended-container">
               <h4 className="recommended-package">
                 {recommendation.RecommendedPackage.packageName}
               </h4>
               <span className="badge recommended">recommended</span>
             </div>
-
             <p className="description">
               {recommendation.RecommendedPackage.description}
             </p>
-            <p className="repository">
-              Repository:{" "}
-              <a href={recommendation.RecommendedPackage.repository}>
-                {recommendation.RecommendedPackage.repository}
-              </a>
-            </p>
-            <div>
-              <div className="stats">
-                <p>Downloads:</p>
-                <strong>{recommendation.RecommendedPackage.downloads}+</strong>
+            <div className="stats">
+              <div className="stats-item">
+                <p>Downloads</p>
+                <strong>
+                  {recommendation.RecommendedPackage.downloads > 1000
+                    ? (
+                        recommendation.RecommendedPackage.downloads / 10000
+                      ).toFixed(1) + "K+"
+                    : recommendation.RecommendedPackage.downloads.toFixed(1) +
+                      "+"}
+                </strong>
+              </div>
+              <div className="stats-item">
+                <p>Stars</p>
+                <strong>
+                  {recommendation.RecommendedPackage.stars > 1000
+                    ? (recommendation.RecommendedPackage.stars / 1000).toFixed(
+                        1
+                      ) + "K+"
+                    : recommendation.RecommendedPackage.stars.toFixed(1) + "+"}
+                </strong>
+              </div>
+              <div className="stats-item">
+                <p>Health</p>
+
+                <strong>
+                  {Math.abs(recommendation.RecommendedPackage.health).toFixed(
+                    1
+                  )}{" "}
+                  %
+                </strong>
               </div>
             </div>
+            <p className="repository">
+              <a href={recommendation.RecommendedPackage.repository}>
+                <img src="repo.png" className="icon" />
+                Repository
+              </a>
+              <a href={recommendation.RecommendedPackage.npm}>
+                <img src="documentation.png" className="icon" />
+                Documentation
+              </a>
+            </p>
+
+            <div></div>
           </div>
         </>
       ) : (

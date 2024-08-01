@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 
 function ComparisonTable({ data }) {
-  console.log("ComparisonTable data:", data); // Debugging line
+  console.log("ComparisonTable data:", data);
 
   return (
     <>
@@ -28,21 +28,29 @@ function ComparisonTable({ data }) {
               <th scope="row">{index + 1}</th>
               <td>{pkg.packageName || "N/A"}</td>
               <td>
-                <a href={pkg.repository?.url || "#"}>
-                  {pkg.repository || "N/A"}
+                <a href={pkg.links?.repository || "#"}>
+                  <img src="github (2).png" />
                 </a>
               </td>
               <td>
-                <a href={pkg.npm || "#"}>{pkg.npm || "N/A"}</a>
+                <a href={pkg.npm || "#"}>
+                  {" "}
+                  <img src="npm (2).png" />
+                </a>
               </td>
               <td>
-                <a href={pkg.homepage || "#"}>{pkg.homepage || "N/A"}</a>
+                <a href={pkg.homepage || "#"}>
+                  {" "}
+                  <img src="website (2).png" />
+                </a>
               </td>
               <td>{pkg.stars || "N/A"}</td>
               <td>{pkg.issues || "Unknown"}</td>
               <td>{pkg.version || "Unknown"}</td>
 
-              <td>{pkg.size || "Unknown"}</td>
+              <td>
+                {pkg.size ? (pkg.size / 1000).toFixed(1) + "KB" : "Unknown"}
+              </td>
             </tr>
           ))}
         </tbody>

@@ -61,6 +61,13 @@ function App() {
       `https://api.npmjs.org/downloads/range/${downloadsFilter}/${pkg}`
     );
     const data = await response.json();
+    console.log(
+      "Fetched data for package:",
+      pkg,
+      "with filter:",
+      downloadsFilter,
+      data
+    );
 
     if (data.downloads && Array.isArray(data.downloads)) {
       return data.downloads.map((item) => ({
@@ -81,6 +88,7 @@ function App() {
         allHistoricalData = allHistoricalData.concat(historicalDownloadsData);
       }
     }
+    console.log("All historical data:", allHistoricalData);
     dispatch(setHistoricalDownloads(allHistoricalData));
   };
 
@@ -92,17 +100,20 @@ function App() {
     }
     const data = await response.json();
 
+    const description =
+      data.collected?.metadata?.description || "No description";
     const repository =
-      data.collected?.metadata?.repository?.url || "No repository";
+      data.collected?.metadata?.links?.repository || "No repository";
     const npm = data.collected?.metadata?.links?.npm || "No Npm";
     const homepage = data.collected?.metadata?.links?.homepage || "No Homepage";
     const stars = data.collected?.github?.starsCount || "Unknown";
     const issues = data.collected?.github?.issues?.count || "Unknown";
     const version = data.collected?.metadata?.version || "Unknown";
-    
+
     const size = data.collected?.source?.files?.readmeSize || "Unknown";
     const carefullness = data.score?.detail?.quality || 0;
     const communityInterest = data.score?.detail?.popularity || 0;
+    const health = data.evaluation?.quality?.health || 0;
 
     if (!selectedPackages.some((p) => p.packageName === pkg)) {
       const downloads = await fetchDownloads(pkg);
@@ -116,10 +127,12 @@ function App() {
         stars,
         issues,
         version,
-       
+        description,
+
         size,
         communityInterest,
         carefullness,
+        health,
       };
 
       dispatch(addPackage(newPackage));
@@ -136,18 +149,19 @@ function App() {
     } else {
       dispatch(setHistoricalDownloads([]));
     }
+    console.log("All historical downloads: ", historicalDownloads);
   }, [selectedPackages, dispatch, downloadsFilter]);
 
   return (
     <>
       <div>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light ">
+          <img src="logo (2).png" className="logo" />
           <a className="navbar-brand" href="#">
             Npm Packages Comparator
           </a>
         </nav>
       </div>
-
       <SearchInput
         searchPackage={searchPackage}
         selectedPackages={selectedPackages}
@@ -156,13 +170,14 @@ function App() {
 
       {showComparisonTable ? <ComparisonTable data={selectedPackages} /> : ""}
 
-      <DownloadsFilter />
       {selectedPackages.length > 0 ? (
-        <DownloadsChart data={historicalDownloads} />
+        <DownloadsChart
+          data={historicalDownloads}
+          selectedPackages={selectedPackages}
+        />
       ) : (
         " "
       )}
-
       {showComparisonTable ? <Recommendations /> : ""}
     </>
   );

@@ -1,13 +1,68 @@
 import React from "react";
 import { Line } from "@ant-design/plots";
 import "./App.css";
+import dayjs from "dayjs";
+import DownloadsFilter from "./DownloadsFilter";
 
-const DownloadsChart = ({ data }) => {
-  const formattedData = data.map((item) => ({
-    day: new Date(item.day),
-    downloads: item.downloads,
-    packageName: item.packageName,
-  }));
+const DownloadsChart = ({ data, selectedPackages }) => {
+  const groupByWeek = (data) => {
+    if (!data || data.length === 0) return [];
+
+    const packageGroups = data.reduce((acc, item) => {
+      if (!acc[item.packageName]) {
+        acc[item.packageName] = [];
+      }
+      acc[item.packageName].push(item);
+      return acc;
+    }, {});
+
+    const weeklyData = [];
+
+    Object.keys(packageGroups).forEach((packageName) => {
+      let currentWeek = [];
+      let currentWeekStart = dayjs(packageGroups[packageName][0].day).startOf(
+        "week"
+      );
+
+      packageGroups[packageName].forEach((item) => {
+        if (dayjs(item.day).isBefore(currentWeekStart.add(1, "week"))) {
+          currentWeek.push(item);
+        } else {
+          const weekAverage =
+            currentWeek.reduce((acc, curr) => acc + curr.downloads, 0) /
+            currentWeek.length;
+          weeklyData.push({
+            day: currentWeekStart.toDate(),
+            downloads: weekAverage,
+            packageName: currentWeek[0].packageName,
+          });
+          currentWeekStart = currentWeekStart.add(1, "week");
+          currentWeek = [item];
+        }
+      });
+
+      if (currentWeek.length > 0) {
+        const weekAverage =
+          currentWeek.reduce((acc, curr) => acc + curr.downloads, 0) /
+          currentWeek.length;
+        weeklyData.push({
+          day: currentWeekStart.toDate(),
+          downloads: weekAverage,
+          packageName: currentWeek[0].packageName,
+        });
+      }
+    });
+
+    return weeklyData;
+  };
+
+  const formattedData = groupByWeek(
+    data.map((item) => ({
+      day: new Date(item.day),
+      downloads: item.downloads,
+      packageName: item.packageName,
+    }))
+  );
 
   const config = {
     data: formattedData,
@@ -20,7 +75,7 @@ const DownloadsChart = ({ data }) => {
     },
     xAxis: {
       title: {
-        text: "Day",
+        text: "Week",
         position: "end",
         offset: 0,
         style: {
@@ -58,13 +113,17 @@ const DownloadsChart = ({ data }) => {
         },
       },
     },
-    yAxis: {
-      label: {
-        formatter: (text) => {
+    axis: {
+      y: {
+        labelFormatter: (text) => {
           const value = Number(text);
-          return value
-            .toLocaleString("en-US")
-            .replace(/(\d)(?=(\d{3})+$)/g, "$1,");
+          if (value >= 1000000) {
+            return `${(value / 1000000).toFixed(1)}M`;
+          } else if (value >= 1000) {
+            return `${(value / 1000).toFixed(1)}K`;
+          } else {
+            return value.toString();
+          }
         },
       },
     },
@@ -72,15 +131,13 @@ const DownloadsChart = ({ data }) => {
     lineStyle: {
       lineWidth: 2,
     },
-    point: {
-      size: 5,
-      shape: "circle",
-    },
   };
 
   return (
     <div className="chart-container">
       <h3 className="chart-title">Downloads Chart</h3>
+      {selectedPackages.length > 0 ? <DownloadsFilter /> : ""}
+
       <Line {...config} />
     </div>
   );
