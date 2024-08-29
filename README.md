@@ -53,12 +53,12 @@ The NPM Packages Comparator is a web application that allows users to search, co
 
 To run this app locally, follow these steps:
 
-1. Clone the repository:
+1. **Clone the repository**:
 
    ```bash
    git clone https://github.com/ZarinaAttaria/Packages_Comparator.git
    ```
 
-2. Executing the project:
+2. **Executing the app**:
    npm install,
    npm run dev
