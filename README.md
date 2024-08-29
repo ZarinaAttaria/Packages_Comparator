@@ -10,34 +10,28 @@
 
 The NPM Packages Comparator is a web application that allows users to search, compare, and receive recommendations for npm packages based on various key data points. This tool helps developers choose the best package for their project needs.
 
-## Mockups
-
-For a comprehensive view of project mockups and UI design, please visit the [Figma link](#) (Replace `#` with the actual link).
-
 ## Features
 
 ### Search and Compare
 
 - **Search Box**: Users can search for npm packages by keyword.
-- **Package Selection**: Users can independently search and select up to two packages.
+- **Package Selection**: Users can independently search and select up to as many packages as they want.
 - **Package Suggestions**: As users type in the search box, package suggestions are displayed.
-- **Comparison Restriction**: Users can only compare two packages at a time.
 
 ### Recommender
 
 - **Recommendation**: Based on the comparison results, the app recommends the best package.
-- **Comparison Table**: A table displays key data points for both packages.
+- **Comparison Table**: A table displays key data points for packages.
 - **Downloads Comparison**: Users can compare the number of downloads between the selected packages.
 - **Final Recommendation**: The recommendation is based on a weighted percentage:
   - 20% Community Interest
   - 50% Downloads
   - 30% Tests and Carefulness
-- **Languages Used**: Users can see the languages used in each package.
 
 ## Success Metrics
 
 - A complete UI of the application built using React with a focus on good UX.
-- Following best practices for React and TypeScript.
+- Following best practices for React and JavaScript.
 - Integration with npm/GitHub APIs to retrieve package data.
 - Analyzing packages by comparing key data points.
 - Deploying the app on Vercel.
@@ -50,7 +44,7 @@ For a comprehensive view of project mockups and UI design, please visit the [Fig
 
 ## Tech Stack
 
-- **Frontend**: React, TypeScript
+- **Frontend**: React, JavaScript, redux
 - **UI Framework**: Ant Design
 - **Charts**: Ant Design Charts
 - **Styling**: CSS
