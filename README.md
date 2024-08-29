@@ -47,7 +47,7 @@ The NPM Packages Comparator is a web application that allows users to search, co
 - **Frontend**: React, JavaScript, Redux
 - **UI Framework**: Ant Design
 - **Charts**: Ant Design Charts
-- **Styling**: CSS
+- **Styling**: CSS, Bootstrap
 
 ## Installation
 
