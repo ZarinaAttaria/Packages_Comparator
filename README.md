@@ -44,7 +44,7 @@ The NPM Packages Comparator is a web application that allows users to search, co
 
 ## Tech Stack
 
-- **Frontend**: React, JavaScript, redux
+- **Frontend**: React, JavaScript, Redux
 - **UI Framework**: Ant Design
 - **Charts**: Ant Design Charts
 - **Styling**: CSS
@@ -60,5 +60,5 @@ To run this app locally, follow these steps:
    ```
 
 2. Executing the project:
+   npm install,
    npm run dev
-   npm install
